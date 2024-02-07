@@ -2,6 +2,7 @@ import logo from './assets/LogoNLW.svg'
 import { NewNoteCard } from './components/NewNoteCard'
 import { NoteCard } from './components/NoteCard'
 
+
 export function App() {
 
 const note = {
@@ -20,7 +21,7 @@ const note = {
 
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
         <NewNoteCard/>
-        <NoteCard note={note} />
+        <NoteCard note={note}/>
 
 
       </div>    
