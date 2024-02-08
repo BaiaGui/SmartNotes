@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import logo from './assets/LogoNLW.svg'
 import { NewNoteCard } from './components/NewNoteCard'
 import { NoteCard } from './components/NoteCard'
@@ -5,10 +6,33 @@ import { NoteCard } from './components/NoteCard'
 
 export function App() {
 
-const note = {
-    date: new Date(),
-    content: "Hello World!"
-}
+  interface Note{
+      id: string,
+      date: Date,
+      content: string
+  }
+
+  const [notes, setNotes] = useState<Note[]>(()=>{
+    const storagedNotes = localStorage.getItem('notes');
+
+    if(storagedNotes)
+      return JSON.parse(storagedNotes)
+    else
+      return []
+  })
+
+  function onNoteCreated(noteContent: string){
+    const newNote = {
+      id: Math.random().toString(),
+      date: new Date(),
+      content: noteContent
+    }
+
+    const notesArray = [newNote, ...notes]
+    setNotes(notesArray)
+    localStorage.setItem('notes', JSON.stringify(notesArray) )
+  }
+
 
   return (
     <div className='mx-auto max-w-6xl my-12 space-y-6'>
@@ -20,8 +44,8 @@ const note = {
       <div className='h-px bg-slate-700'/>
 
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
-        <NewNoteCard/>
-        <NoteCard note={note}/>
+        <NewNoteCard onNoteCreated={onNoteCreated}/>
+        {notes.map(note => {return <NoteCard note={note} key={note.id} /> })}
 
 
       </div>    
